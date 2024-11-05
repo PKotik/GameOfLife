@@ -11,8 +11,8 @@
 #include "ButtonStart.h"
 #include "Data.h"
 
-Cell Living_Cells[10000];
-Cell Future_Cells[10000];
+Cell Living_Cells[6400];
+Cell Future_Cells[6400];
 int size = sizeof(Living_Cells) / sizeof(Cell);
 float radius = 0.0170/2;
 float radius_field = 0.0190/2;
@@ -20,7 +20,7 @@ float radius_field = 0.0190/2;
 int resolution_x = 1920;
 int resolution_y = 1080;
 
-int scale_x = 40;
+int scale_x = 40; 
 int scale_y = 40;
 
 void PaintField()
@@ -40,7 +40,7 @@ void PaintField()
     }
 }
 
-void PaintCell(GLFWwindow* window, Cell(&mas)[10000])
+void PaintCell(GLFWwindow* window, Cell(&mas)[6400])
 {
     float fl_x;
     float fl_y;
@@ -65,7 +65,7 @@ void PaintCell(GLFWwindow* window, Cell(&mas)[10000])
 
 }
 
-bool Indentification(int x, int y, Cell(&mas)[10000])
+bool Indentification(int x, int y, Cell(&mas)[6400])
 {
     for (int i = 0; i < sizeof(mas) / sizeof(Cell); i++)
     {
@@ -74,7 +74,7 @@ bool Indentification(int x, int y, Cell(&mas)[10000])
     return false;
 }
 
-int Count_Envir(Cell cell, Cell(&mas)[10000])
+int Count_Envir(Cell cell, Cell(&mas)[6400])
 {
     int count = 0;
     for (int j = 0; j < sizeof(mas) / sizeof(Cell); j++)
