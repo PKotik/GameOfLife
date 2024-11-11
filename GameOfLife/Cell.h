@@ -1,8 +1,8 @@
 #pragma once
-class Cell
+struct Cell
 {
 public:
 	char coor_x; char coor_y;
-	int envir; bool condition;
+	char envir; bool condition;
 	float time_live;
 };
