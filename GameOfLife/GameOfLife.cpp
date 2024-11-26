@@ -32,7 +32,7 @@ void PaintField()
             glBegin(GL_QUADS);
             glColor3f(0.1f, 0.1f, 0.1f);
             glVertex2f(x / scale_x - radius_field, y / scale_y - radius_field);
-            glVertex2f(x / scale_x - radius_field, y / scale_y + radius_field);
+            glVertex2f(x / scale_x - radius_field, y / scale_y + radius_field); 
             glVertex2f(x / scale_x+ radius_field, y / scale_y + radius_field);
             glVertex2f(x / scale_x+ radius_field, y / scale_y- radius_field);
 
@@ -40,30 +40,263 @@ void PaintField()
     }
 }
 
-void PaintCell(GLFWwindow* window, Cell(&mas)[6400])
-{
-    float fl_x;
-    float fl_y;
-    int k;
-    for (int j = 0; j < sizeof(mas) / sizeof(Cell); j++)
-    {
-        if (mas[j].condition == true)
-        {
-            fl_x = mas[j].coor_x;
-            fl_y = mas[j].coor_y;
-            glBegin(GL_QUADS);
-            glColor3f(0.5f  , 1.0f  , 1.0f  );
-            glVertex2f(fl_x / scale_x - radius, fl_y / scale_y - radius);
-            glVertex2f(fl_x / scale_x - radius, fl_y / scale_y + radius);
-            glColor3f(0.0f+mas[j].time_live, 0.0f + mas[j].time_live, 1.0f + mas[j].time_live);
-            glVertex2f(fl_x / scale_x + radius, fl_y / scale_y + radius);
-            glVertex2f(fl_x / scale_x + radius, fl_y / scale_y - radius);
 
+struct Tree
+{
+    Cell* cell;
+    Tree* right;
+    Tree* left;
+};
+
+
+struct List
+{
+    Cell* cell;
+    List* next;
+};
+
+List* CreateList(Cell* cell)
+{
+    List* tmp = (List*)malloc(sizeof(List));
+    tmp->cell = cell;
+    tmp->next = NULL;
+    return tmp;
+}
+
+List* AddL(Cell* cell, List* list)
+{
+    if (list==NULL) return CreateList(cell);
+    if (list->cell->coor_x == cell->coor_x && list->cell->coor_y == cell->coor_y) return list;
+    List* tmp = CreateList(cell);
+    tmp->next = list;
+    return tmp;
+    //while (list != NULL)
+    //{
+    //    if (list->cell->coor_x == cell->coor_x && list->cell->coor_y == cell->coor_y) return save;
+    //    else list = list->next;
+    //}
+    //List* tmp = CreateList(cell);
+    //list = tmp;
+    //return save;
+}
+
+//List* DeleteAllList(List* list)
+//{
+//    if (list == NULL)
+//    {
+//        return NULL;
+//    }
+//    while (list->next != NULL)
+//    {
+//        List* save = list->next;
+//        free(list);
+//        list = list->next;
+//    }
+//    free(list);
+//    list = NULL;
+//    return list;
+//}
+
+int Averaga(int x, int y)
+{
+    return ((200+x) * 1000) + 200+y;
+}
+
+Tree* CreateNode(Cell* cell)
+{
+    Tree* tmp = (Tree*)malloc(sizeof(Tree));
+    tmp->cell = cell;
+    tmp->right = NULL;
+    tmp->left = NULL;
+   
+    return tmp;
+}
+
+Tree* LiveTree = NULL;
+List* Doomed_to_die = NULL;
+
+
+Tree* Add(Cell* cell, Tree* tree)
+{
+    if (tree == NULL)
+    {
+        tree = CreateNode(cell);
+        return tree;
+    }
+    if (cell->Aver == tree->cell->Aver) return tree;
+    else if (cell->Aver > tree->cell->Aver)
+    {
+        tree->right = Add(cell, tree->right);
+        return tree;
+    }
+    else if (cell->Aver < tree->cell->Aver)
+    {
+        tree->left = Add(cell, tree->left);
+        return tree;
+    }
+    return tree;
+}
+
+Tree* Delete(Cell* cell, Tree* tree)
+{
+    if (tree == NULL) return tree;
+
+    if (cell->Aver == tree->cell->Aver)
+    {
+        if (tree->left == NULL && tree->right == NULL)
+        {
+            free(tree->cell);
+            free(tree);
+            tree = NULL;
         }
-        
+        else if (tree->left == NULL && tree->right != NULL)
+        {
+            Tree* t = tree;
+            tree = tree->right;
+            free(t->cell);
+            free(t);
+            t = NULL;
+        }
+        else if (tree->left != NULL && tree->right == NULL)
+        {
+            Tree* t = tree;
+            tree = tree->left;
+            free(t->cell);
+            free(t);
+            t = NULL;
+        }
+        else if (tree->left != NULL && tree->right != NULL)
+        {
+            Tree* t = tree;
+            Tree* tmp = tree->left;
+            while (tmp->right != NULL)
+            {
+                tmp = tmp->right;
+            }
+            if (tmp != tree->left) tmp->left = tree->left;
+            tmp->right = tree->right;
+            tree = tmp;
+            free(t->cell);
+            free(t);
+            t = NULL;
+        }
+
+
+    }
+    else if (cell->Aver < tree->cell->Aver)
+    {
+        if (tree->left == NULL)
+        {
+            return tree;
+        }
+
+        else
+        {
+            tree->left = Delete(cell,tree->left);
+        }
+    }
+    else if (cell->Aver > tree->cell->Aver)
+    {
+        if (tree->right == NULL)
+        {
+            return tree;
+        }
+        else
+        {
+            tree->right = Delete(cell, tree->right);
+        }
+    }
+    return tree;
+}
+
+
+//void DeleteAll(Tree* tree)
+//{
+//    if (tree == NULL) return;
+//    DeleteAll(tree->left);
+//    DeleteAll(tree->right);
+//    free(tree);
+//    tree = NULL;
+//}
+
+Cell* Search(int x, int y, Tree* tree)
+{
+
+    int a = Averaga(x, y);
+
+    if (a == tree->cell->Aver)
+    {
+        return tree->cell;
+    }
+    else if (a < tree->cell->Aver)
+    {
+        if (tree->left == NULL)
+        {
+            return NULL;
+        }
+
+        else
+        {
+            return Search(x, y, tree->left);
+        }
+    }
+    else if (a > tree->cell->Aver)
+    {
+        if (tree->right == NULL)
+        {
+            return NULL;
+        }
+        else
+        {
+            return Search(x, y, tree->right);
+        }
     }
 
 }
+
+
+
+
+
+void PaintCellOne(GLFWwindow* window, Tree* tree)
+{
+    if (tree == NULL)
+    {
+        return;
+    }
+    else
+    {
+        float fl_x;
+        float fl_y;
+
+        int k;
+
+        fl_x = tree->cell->coor_x;
+        fl_y = tree->cell->coor_y;
+        glBegin(GL_QUADS);
+        glColor3f(0.5f, 1.0f, 1.0f);
+        glVertex2f(fl_x / scale_x - radius, fl_y / scale_y - radius);
+        glVertex2f(fl_x / scale_x - radius, fl_y / scale_y + radius);
+        glColor3f(0.0f + tree->cell->time_live, 0.0f + tree->cell->time_live, 1.0f + tree->cell->time_live);
+        glVertex2f(fl_x / scale_x + radius, fl_y / scale_y + radius);
+        glVertex2f(fl_x / scale_x + radius, fl_y / scale_y - radius);
+
+    }
+}
+
+void PaintCell(GLFWwindow* window, Tree* tree)
+{
+    if (tree == NULL)
+    {
+        return;
+    }
+    PaintCellOne(window, tree);
+    PaintCell(window, tree->left);
+    PaintCell(window, tree->right);
+
+}
+
+
 
 bool Indentification(int x, int y, Cell(&mas)[6400])
 {
@@ -74,9 +307,26 @@ bool Indentification(int x, int y, Cell(&mas)[6400])
     return false;
 }
 
-int Count_Envir(Cell cell, Cell(&mas)[6400])
+
+
+int Count_Envir(Cell *cell, Tree *tree)
 {
-    int count = 0;
+    char x = cell->coor_x;
+    char y = cell->coor_y;
+    char count = 0;
+
+    if (Search(x - 1, y + 1, tree)!=NULL) count++;
+    if (Search(x - 1, y, tree) != NULL) count++;
+    if (Search(x - 1, y - 1, tree) != NULL) count++;
+    if (Search(x, y + 1, tree) != NULL) count++;
+    if (Search(x, y - 1, tree) != NULL) count++;
+    if (Search(x + 1, y + 1, tree) != NULL) count++;
+    if (Search(x + 1, y, tree) != NULL) count++;
+    if (Search(x + 1, y - 1, tree) != NULL) count++;
+
+    return count;
+    
+    /*int count = 0;
     for (int j = 0; j < sizeof(mas) / sizeof(Cell); j++)
     {
         if ((mas[j].condition == true) && (abs(mas[j].coor_x - cell.coor_x) < 2) &&
@@ -85,25 +335,21 @@ int Count_Envir(Cell cell, Cell(&mas)[6400])
             count++;
         }
     }
-    return count;
+    return count;*/
 }
 
-void Random_Generation()
+
+void Random_Generation(Tree** tree )
 {
-    
     int x; int y; int z;
-    z = rand() % ((sizeof(Living_Cells) / sizeof(Cell)));
-    while (z < ((sizeof(Living_Cells) / sizeof(Cell)))/1.4 ) z *= 1.4;
-    for (int j = (sizeof(Living_Cells) / sizeof(Cell))-1; j >=z; j--)
+    z = rand() % 3000;
+    for (int i=0; i < z; i++)
     {
-        x = (rand() % (scale_x * 2)) - scale_x;
-        y = (rand() % (scale_y * 2)) - scale_y;
-        if (Indentification(x, y, Living_Cells) == false)
-        {
-            Living_Cells[j].coor_x = x;
-            Living_Cells[j].coor_y = y;
-            Living_Cells[j].condition = true;
-        }
+        Cell* cell = (Cell*)malloc(sizeof(Cell));
+        cell->coor_x = (rand() % 80) - 40;
+        cell->coor_y = (rand() % 80) - 40;
+        cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+        *tree = Add(cell, *tree);
     }
 }
 
@@ -171,7 +417,92 @@ void Create_Shape(int speedxPos0, int speedyPos0, int num_shape, Shapes Shape)
     }
 }
 
+List* Children = NULL;
 
+
+void MainCountEnvir(Tree* tree, List** dielist, List** bornlist, Tree* root)
+{
+    if (tree == NULL) return;
+    
+    char envir = Count_Envir(tree->cell, root);
+    tree->cell->envir = envir;
+    if (envir != 2 && envir != 3)
+    {
+        *dielist = AddL(tree->cell, *dielist);
+    }
+    if (envir > 0)
+    {
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (i != 0 || j != 0)
+                {
+                    if (Search(tree->cell->coor_x + i, tree->cell->coor_y + j, root) == NULL)
+                    {
+                        Cell* Dopcell = (Cell*)malloc(sizeof(Cell));
+                        Dopcell->coor_x = tree->cell->coor_x + i;
+                        Dopcell->coor_y = tree->cell->coor_y + j;
+                        Dopcell->Aver = Averaga(Dopcell->coor_x, Dopcell->coor_y);
+                        char dopenvir = Count_Envir(Dopcell, root);
+                        if (dopenvir == 3)
+                        {
+                            *bornlist = AddL(Dopcell, *bornlist);
+                        }
+                        else
+                        {
+                            free(Dopcell);
+                            Dopcell = NULL;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    MainCountEnvir(tree->left, dielist, bornlist, root);
+    MainCountEnvir(tree->right, dielist, bornlist, root);
+}
+
+
+
+Tree* MainKiller(Tree* tree,  List* list)
+{
+    //if (list == NULL)
+    //{
+    //    return NULL;
+    //}
+    while (list != NULL)
+    {
+        tree = Delete(list->cell, tree);
+        list = list->next;
+    }
+    return tree;
+}
+
+List* ClearList(List* list)
+{
+    while (list != NULL)
+    {
+        List* tmp = list->next;
+        //free(list->cell);
+        free(list);
+        list = tmp;
+    }
+    return list;
+}
+
+Tree* MainBorner(Tree* tree, List* list)
+{
+
+    while (list != NULL)
+    {
+        tree = Add(list->cell, tree);
+        list = list->next;
+    }
+    return tree;
+
+}
 
 using namespace std::chrono;
 
@@ -217,8 +548,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     double speedyPos0;
     float xPos0;
     float yPos0;
-    int xPos1;
-    int yPos1;
+    char xPos1;
+    char yPos1;
     bool sch = true;
     MSG msg;
     MSG msg1;
@@ -265,6 +596,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     
     //INTEX();
     /* Loop until the user closes the window */
+
+
+
+
 
     while (!glfwWindowShouldClose(window))
     {
@@ -321,7 +656,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         
         //Paint_Text();
         PaintField();
-        PaintCell(window, Living_Cells);
+        if (LiveTree != NULL)
+        {
+            PaintCellOne(window, LiveTree);
+            PaintCell(window, LiveTree->left);
+            PaintCell(window, LiveTree->right);
+        }
         Button_Random.BuildButton();
         Button_Random.PrintText_Rand();
         //Paint_Text();
@@ -369,11 +709,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         glfwPollEvents();
 
 
-        for (int i = 0; i < sizeof(Future_Cells) / sizeof(Cell); i++)
-        {
-            Future_Cells[i].condition = false;
-            Future_Cells[i].time_live = 0.0;
-        }
+        //for (int i = 0; i < sizeof(Future_Cells) / sizeof(Cell); i++)
+        //{
+        //    Future_Cells[i].condition = false;
+        //    Future_Cells[i].time_live = 0.0;
+        //}
         std::this_thread::sleep_for(time1);
         if (flag_input == true)
         {          
@@ -481,7 +821,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         ((Button_Random.coor_y - Button_Random.radius_y) <= speedyPos0 && speedyPos0 <= Button_Random.coor_y + Button_Random.radius_y))
                     {
 
-                        Random_Generation();
+                        Random_Generation(&LiveTree);
                         sch = false;
                         flag_start = false;
                         flag_input = true;
@@ -507,31 +847,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 {
                     xPos1 = round(((xPos - resolution_x / 2) / (resolution_x / 2)) * scale_x);
                     yPos1 = round(((-yPos + resolution_y / 2) / (resolution_y / 2)) * scale_y);
-                    if (Indentification(xPos1, yPos1, Living_Cells) == false)
-                    {
-                        for (quality = 0; quality < size; quality++)
-                        {
-                            if (Living_Cells[quality].condition == false)
-                            {
-                                Living_Cells[quality].coor_x = xPos1;
-                                Living_Cells[quality].coor_y = yPos1;
-                                Living_Cells[quality].condition = true;
-                                break;
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        for (int k = 0; k < size; k++)
-                        {
-                            if (Living_Cells[k].coor_x == xPos1 && Living_Cells[k].coor_y == yPos1)
-                            {
-                                Living_Cells[k].condition = false;
-                                break;
-                            }
-                        }
-                    }
+                    Cell *cell = (Cell*)malloc(sizeof(Cell));
+                    cell->coor_x = xPos1;
+                    cell->coor_y = yPos1;
+                    cell->Aver = Averaga(xPos1, yPos1);
+                    LiveTree = Add(cell, LiveTree);
                 }
             }
 
@@ -547,6 +867,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 flag_input = true;
             }
 
+
+            MainCountEnvir(LiveTree, &Doomed_to_die, &Children, LiveTree);
+            LiveTree = MainKiller(LiveTree, Doomed_to_die);
+            LiveTree = MainBorner(LiveTree, Children);
+            Doomed_to_die = ClearList(Doomed_to_die);
+            Children = ClearList(Children);
+
+
+
+
+/*            DeleteAll(LiveTree);
+
+            for (int i = 0; i < sizeof(Living_Cells) / sizeof(Cell); i++)
+            {
+                if (Living_Cells[i].condition == true)
+                {
+                    LiveTree = Add(&Living_Cells[i], LiveTree);
+                }
+            }
+
+
             Cell Dop_cell;
             Dop_cell.condition = true;
             Dop_cell.time_live = 0.0f;
@@ -555,7 +896,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             {
                 if (Living_Cells[i].condition == true)
                 {
-                    Living_Cells[i].envir = Count_Envir(Living_Cells[i], Living_Cells) - 1;
+                    Living_Cells[i].envir = Count_Envir(&Living_Cells[i], LiveTree);
                     for (int sx = -1; sx < 2; sx++)
                     {
                         for (int sy = -1; sy < 2; sy++)
@@ -565,10 +906,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                             {
                                 Dop_cell.coor_x = Living_Cells[i].coor_x + sx;
                                 Dop_cell.coor_y = Living_Cells[i].coor_y + sy;
-                                if (Count_Envir(Dop_cell, Living_Cells) == 3) Future_Cells[fi++] = Dop_cell;
+                                if (Count_Envir(&Dop_cell, LiveTree) == 3) Future_Cells[fi++] = Dop_cell;
                             }
                         }
                     }
+                    
                 }
             }
 
@@ -587,7 +929,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                    
                 if (Living_Cells[i].condition == false) Living_Cells[i] = Future_Cells[fi++]; 
                 
-            }                                                                  
+            }   */                                                               
         }
 
     }
