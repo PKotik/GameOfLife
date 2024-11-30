@@ -11,9 +11,9 @@
 #include "ButtonStart.h"
 #include "Data.h"
 
-Cell Living_Cells[6400];
-Cell Future_Cells[6400];
-int size = sizeof(Living_Cells) / sizeof(Cell);
+//Cell Living_Cells[6400];
+//Cell Future_Cells[6400];
+//int size = sizeof(Living_Cells) / sizeof(Cell);
 float radius = 0.0170/2;
 float radius_field = 0.0190/2;
 
@@ -123,7 +123,7 @@ Tree* Add(Cell* cell, Tree* tree)
         tree = CreateNode(cell);
         return tree;
     }
-    if (cell->Aver == tree->cell->Aver) return tree;
+    //if (cell->Aver == tree->cell->Aver) return tree;
     else if (cell->Aver > tree->cell->Aver)
     {
         tree->right = Add(cell, tree->right);
@@ -137,9 +137,54 @@ Tree* Add(Cell* cell, Tree* tree)
     return tree;
 }
 
+Tree* DeleteAll(Tree* tree)
+{
+    return NULL; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ЭТО ВРЕМЕННННООООООО!!!!!
+}
+
+Tree* SpecDelete(Cell* cell, Tree* tree)
+{
+    if (tree == NULL) return NULL;
+
+    if (cell->Aver == tree->cell->Aver)
+    {
+        if (tree->left == NULL && tree->right == NULL)
+        {
+            tree = NULL;
+        }
+        else if (tree->left != NULL && tree->right == NULL)
+        {
+            Tree* t = tree;
+            tree = tree->left;
+            t = NULL;
+        }
+
+    }
+    //else if (cell->Aver < tree->cell->Aver)
+    //{
+    //    if (tree->left != NULL)
+    //    {
+    //        tree->left = Delete(cell, tree->left);
+    //    }
+    //}
+    //else if (cell->Aver > tree->cell->Aver)
+    //{
+    //    if (tree->right != NULL)
+    //    {
+    //        tree->right = Delete(cell, tree->right);
+    //    }
+    //}
+    else
+    {
+        tree->right = SpecDelete(cell, tree->right);
+    }
+    return tree;
+}
+
+
 Tree* Delete(Cell* cell, Tree* tree)
 {
-    if (tree == NULL) return tree;
+    if (tree == NULL) return NULL;
 
     if (cell->Aver == tree->cell->Aver)
     {
@@ -169,11 +214,23 @@ Tree* Delete(Cell* cell, Tree* tree)
         {
             Tree* t = tree;
             Tree* tmp = tree->left;
+            Tree* save = tree;
             while (tmp->right != NULL)
             {
                 tmp = tmp->right;
             }
-            if (tmp != tree->left) tmp->left = tree->left;
+            
+            if (tmp != tree->left)
+            {
+                //Tree* s = tmp->left;
+                //if (s != NULL)
+                //{
+                //    puts("123");
+                //}
+
+                tree->left = SpecDelete(tmp->cell, tree->left);
+                tmp->left = tree->left;
+            }
             tmp->right = tree->right;
             tree = tmp;
             free(t->cell);
@@ -185,23 +242,14 @@ Tree* Delete(Cell* cell, Tree* tree)
     }
     else if (cell->Aver < tree->cell->Aver)
     {
-        if (tree->left == NULL)
-        {
-            return tree;
-        }
-
-        else
+        if (tree->left != NULL)
         {
             tree->left = Delete(cell,tree->left);
         }
     }
     else if (cell->Aver > tree->cell->Aver)
     {
-        if (tree->right == NULL)
-        {
-            return tree;
-        }
-        else
+        if (tree->right != NULL)
         {
             tree->right = Delete(cell, tree->right);
         }
@@ -221,7 +269,7 @@ Tree* Delete(Cell* cell, Tree* tree)
 
 Cell* Search(int x, int y, Tree* tree)
 {
-
+    if (tree == NULL) return NULL;
     int a = Averaga(x, y);
 
     if (a == tree->cell->Aver)
@@ -290,22 +338,23 @@ void PaintCell(GLFWwindow* window, Tree* tree)
     {
         return;
     }
-    PaintCellOne(window, tree);
     PaintCell(window, tree->left);
+    PaintCellOne(window, tree);
+    
     PaintCell(window, tree->right);
 
 }
 
 
-
-bool Indentification(int x, int y, Cell(&mas)[6400])
-{
-    for (int i = 0; i < sizeof(mas) / sizeof(Cell); i++)
-    {
-        if (mas[i].coor_x == x && mas[i].coor_y == y && mas[i].condition == true) return true;
-    }
-    return false;
-}
+//
+//bool Indentification(int x, int y, Cell(&mas)[6400])
+//{
+//    for (int i = 0; i < sizeof(mas) / sizeof(Cell); i++)
+//    {
+//        if (mas[i].coor_x == x && mas[i].coor_y == y && mas[i].condition == true) return true;
+//    }
+//    return false;
+//}
 
 
 
@@ -355,65 +404,82 @@ void Random_Generation(Tree** tree )
 
 void Create_Shape(int speedxPos0, int speedyPos0, int num_shape, Shapes Shape)
 {
-    int quality_count = 0;
     int dop_x = 0;
     int dop_y = 0;
-    for (int quality = 0; quality < size; quality++)
+    if (num_shape == 1)
     {
-        if (Living_Cells[quality].condition == false)
+        for (int i = 0; i < 40; i++)
         {
-            if (num_shape == 1)
-            {
-                Living_Cells[quality].coor_x = speedxPos0 + dop_x;
-                Living_Cells[quality].coor_y = speedyPos0 + dop_y;
-                Living_Cells[quality].condition = true;
-                dop_x = Shape.Glider[quality_count][0];
-                dop_y = Shape.Glider[quality_count][1];
-                quality_count++;
-                if (dop_x == 111) break;
-            }
-            if (num_shape == 2)
-            {
-                Living_Cells[quality].coor_x = speedxPos0 + dop_x;
-                Living_Cells[quality].coor_y = speedyPos0 + dop_y;
-                Living_Cells[quality].condition = true;
-                dop_x = Shape.GliderCannon[quality_count][0];
-                dop_y = Shape.GliderCannon[quality_count][1];
-                quality_count++;
-                if (dop_x == 111) break;
-            }
-            if (num_shape == 3)
-            {
-                Living_Cells[quality].coor_x = speedxPos0 + dop_x;
-                Living_Cells[quality].coor_y = speedyPos0 + dop_y;
-                Living_Cells[quality].condition = true;
-                dop_x = Shape.Pulsar[quality_count][0];
-                dop_y = Shape.Pulsar[quality_count][1];
-                quality_count++;
-                if (dop_x == 111) break;
-            }
-            if (num_shape == 4)
-            {
-                Living_Cells[quality].coor_x = speedxPos0 + dop_x;
-                Living_Cells[quality].coor_y = speedyPos0 + dop_y;
-                Living_Cells[quality].condition = true;
-                dop_x = Shape.Prison[quality_count][0];
-                dop_y = Shape.Prison[quality_count][1];
-                quality_count++;
-                if (dop_x == 111) break;
-            }
-            if (num_shape == 5)
-            {
-                Living_Cells[quality].coor_x = speedxPos0 + dop_x;
-                Living_Cells[quality].coor_y = speedyPos0 + dop_y;
-                Living_Cells[quality].condition = true;
-                dop_x = Shape.Horse[quality_count][0];
-                dop_y = Shape.Horse[quality_count][1];
-                quality_count++;
-                if (dop_x == 111) break;
-            }
-
+            Cell* cell = (Cell*)malloc(sizeof(Cell));
+            cell->coor_x = speedxPos0 + dop_x;
+            cell->coor_y = speedyPos0 + dop_y;
+            cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            LiveTree = Add(cell, LiveTree);
+            dop_x = Shape.Glider[i][0];
+            dop_y = Shape.Glider[i][1];
+            if (dop_x == 111) break;
         }
+
+    }
+    if (num_shape == 2)
+    {
+        for (int i = 0; i < 40; i++)
+        {
+            Cell* cell = (Cell*)malloc(sizeof(Cell));
+            cell->coor_x = speedxPos0 + dop_x;
+            cell->coor_y = speedyPos0 + dop_y;
+            cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            LiveTree = Add(cell, LiveTree);
+            dop_x = Shape.GliderCannon[i][0];
+            dop_y = Shape.GliderCannon[i][1];
+            if (dop_x == 111) break;
+        }
+
+    }
+    if (num_shape == 3)
+    {
+        for (int i = 0; i < 40; i++)
+        {
+            Cell* cell = (Cell*)malloc(sizeof(Cell));
+            cell->coor_x = speedxPos0 + dop_x;
+            cell->coor_y = speedyPos0 + dop_y;
+            cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            LiveTree = Add(cell, LiveTree);
+            dop_x = Shape.Pulsar[i][0];
+            dop_y = Shape.Pulsar[i][1];
+            if (dop_x == 111) break;
+        }
+
+    }
+    if (num_shape == 4)
+    {
+        for (int i = 0; i < 40; i++)
+        {
+            Cell* cell = (Cell*)malloc(sizeof(Cell));
+            cell->coor_x = speedxPos0 + dop_x;
+            cell->coor_y = speedyPos0 + dop_y;
+            cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            LiveTree = Add(cell, LiveTree);
+            dop_x = Shape.Prison[i][0];
+            dop_y = Shape.Prison[i][1];
+            if (dop_x == 111) break;
+        }
+
+    }
+    if (num_shape == 5)
+    {
+        for (int i = 0; i < 40; i++)
+        {
+            Cell* cell = (Cell*)malloc(sizeof(Cell));
+            cell->coor_x = speedxPos0 + dop_x;
+            cell->coor_y = speedyPos0 + dop_y;
+            cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            LiveTree = Add(cell, LiveTree);
+            dop_x = Shape.Horse[i][0];
+            dop_y = Shape.Horse[i][1];
+            if (dop_x == 111) break;
+        }
+
     }
 }
 
@@ -430,7 +496,7 @@ void MainCountEnvir(Tree* tree, List** dielist, List** bornlist, Tree* root)
     {
         *dielist = AddL(tree->cell, *dielist);
     }
-    if (envir > 0)
+    if (envir < 8)
     {
         for (int i = -1; i <= 1; i++)
         {
@@ -472,11 +538,13 @@ Tree* MainKiller(Tree* tree,  List* list)
     //{
     //    return NULL;
     //}
+    List* save = list;
     while (list != NULL)
     {
         tree = Delete(list->cell, tree);
         list = list->next;
     }
+    list = save;
     return tree;
 }
 
@@ -494,12 +562,13 @@ List* ClearList(List* list)
 
 Tree* MainBorner(Tree* tree, List* list)
 {
-
+    List* save = list;
     while (list != NULL)
     {
         tree = Add(list->cell, tree);
         list = list->next;
     }
+    list = save;
     return tree;
 
 }
@@ -527,11 +596,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     glfwMakeContextCurrent(window);
 
 
-    for (int i = 0; i < sizeof(Living_Cells) / sizeof(Cell); i++)
-    {
-        Living_Cells[i].condition = false;
-        Living_Cells[i].time_live = 0.0;
-    }
+    //for (int i = 0; i < sizeof(Living_Cells) / sizeof(Cell); i++)
+    //{
+    //    Living_Cells[i].condition = false;
+    //    Living_Cells[i].time_live = 0.0;
+    //}
 
 
     int speed_time=100;
@@ -659,8 +728,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         if (LiveTree != NULL)
         {
             PaintCellOne(window, LiveTree);
-            PaintCell(window, LiveTree->left);
-            PaintCell(window, LiveTree->right);
+            if (LiveTree->left != NULL)
+            {
+                PaintCellOne(window, LiveTree->left);
+                PaintCell(window, LiveTree->left->left);
+                PaintCell(window, LiveTree->left->right);
+            }
+            if (LiveTree->right != NULL)
+            {
+                PaintCellOne(window, LiveTree->right);
+                PaintCell(window, LiveTree->right->left);
+                PaintCell(window, LiveTree->right->right);
+            }
         }
         Button_Random.BuildButton();
         Button_Random.PrintText_Rand();
@@ -777,13 +856,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 if ((GetKeyState(VK_DELETE) && 0x2E) != tab_click0)
                 {
                     tab_click0 = (GetKeyState(VK_DELETE) && 0x2E);
-                    for (int i = 0; i < sizeof(Living_Cells) / sizeof(Cell); i++)
-                    {
-                        Living_Cells[i].condition = false;
-                        Living_Cells[i].time_live = 0;
-                        Living_Cells[i].coor_x = 0;
-                        Living_Cells[i].coor_y = 0;
-                    }
+                    LiveTree = DeleteAll(LiveTree);
                     sch = false;
                     break;
                 }
@@ -847,11 +920,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 {
                     xPos1 = round(((xPos - resolution_x / 2) / (resolution_x / 2)) * scale_x);
                     yPos1 = round(((-yPos + resolution_y / 2) / (resolution_y / 2)) * scale_y);
-                    Cell *cell = (Cell*)malloc(sizeof(Cell));
-                    cell->coor_x = xPos1;
-                    cell->coor_y = yPos1;
-                    cell->Aver = Averaga(xPos1, yPos1);
-                    LiveTree = Add(cell, LiveTree);
+                    Cell* cell = Search(xPos1, yPos1, LiveTree);
+                    if (cell==NULL)
+                    {
+                        Cell* cell = (Cell*)malloc(sizeof(Cell));
+                        cell->coor_x = xPos1;
+                        cell->coor_y = yPos1;
+                        cell->Aver = Averaga(xPos1, yPos1);
+                        LiveTree = Add(cell, LiveTree);
+                    }
+                    else
+                    {
+                        LiveTree = Delete(cell, LiveTree);
+                    }
                 }
             }
 
@@ -869,8 +950,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
             MainCountEnvir(LiveTree, &Doomed_to_die, &Children, LiveTree);
-            LiveTree = MainKiller(LiveTree, Doomed_to_die);
+            
             LiveTree = MainBorner(LiveTree, Children);
+            LiveTree = MainKiller(LiveTree, Doomed_to_die);
             Doomed_to_die = ClearList(Doomed_to_die);
             Children = ClearList(Children);
 
