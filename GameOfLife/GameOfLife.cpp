@@ -137,10 +137,7 @@ Tree* Add(Cell* cell, Tree* tree)
     return tree;
 }
 
-Tree* DeleteAll(Tree* tree)
-{
-    return NULL; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ЭТО ВРЕМЕННННООООООО!!!!!
-}
+
 
 Tree* SpecDelete(Cell* cell, Tree* tree)
 {
@@ -257,6 +254,16 @@ Tree* Delete(Cell* cell, Tree* tree)
     return tree;
 }
 
+
+Tree* DeleteAll(Tree* tree)
+{
+    if (tree == NULL) return NULL;
+    tree = DeleteAll(tree->left);
+    if (tree!=NULL) tree = Delete(tree->cell, tree);
+    if (tree != NULL) tree = DeleteAll(tree->right);
+
+    return NULL; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ЭТО ВРЕМЕННННООООООО!!!!!
+}
 
 //void DeleteAll(Tree* tree)
 //{
@@ -398,6 +405,7 @@ void Random_Generation(Tree** tree )
         cell->coor_x = (rand() % 80) - 40;
         cell->coor_y = (rand() % 80) - 40;
         cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+        cell->time_live = 0;
         *tree = Add(cell, *tree);
     }
 }
@@ -414,6 +422,7 @@ void Create_Shape(int speedxPos0, int speedyPos0, int num_shape, Shapes Shape)
             cell->coor_x = speedxPos0 + dop_x;
             cell->coor_y = speedyPos0 + dop_y;
             cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            cell->time_live = 0;
             LiveTree = Add(cell, LiveTree);
             dop_x = Shape.Glider[i][0];
             dop_y = Shape.Glider[i][1];
@@ -429,6 +438,7 @@ void Create_Shape(int speedxPos0, int speedyPos0, int num_shape, Shapes Shape)
             cell->coor_x = speedxPos0 + dop_x;
             cell->coor_y = speedyPos0 + dop_y;
             cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            cell->time_live = 0;
             LiveTree = Add(cell, LiveTree);
             dop_x = Shape.GliderCannon[i][0];
             dop_y = Shape.GliderCannon[i][1];
@@ -444,6 +454,7 @@ void Create_Shape(int speedxPos0, int speedyPos0, int num_shape, Shapes Shape)
             cell->coor_x = speedxPos0 + dop_x;
             cell->coor_y = speedyPos0 + dop_y;
             cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            cell->time_live = 0;
             LiveTree = Add(cell, LiveTree);
             dop_x = Shape.Pulsar[i][0];
             dop_y = Shape.Pulsar[i][1];
@@ -459,6 +470,7 @@ void Create_Shape(int speedxPos0, int speedyPos0, int num_shape, Shapes Shape)
             cell->coor_x = speedxPos0 + dop_x;
             cell->coor_y = speedyPos0 + dop_y;
             cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            cell->time_live = 0;
             LiveTree = Add(cell, LiveTree);
             dop_x = Shape.Prison[i][0];
             dop_y = Shape.Prison[i][1];
@@ -474,6 +486,7 @@ void Create_Shape(int speedxPos0, int speedyPos0, int num_shape, Shapes Shape)
             cell->coor_x = speedxPos0 + dop_x;
             cell->coor_y = speedyPos0 + dop_y;
             cell->Aver = Averaga(cell->coor_x, cell->coor_y);
+            cell->time_live = 0;
             LiveTree = Add(cell, LiveTree);
             dop_x = Shape.Horse[i][0];
             dop_y = Shape.Horse[i][1];
@@ -491,6 +504,7 @@ void MainCountEnvir(Tree* tree, List** dielist, List** bornlist, Tree* root)
     if (tree == NULL) return;
     
     char envir = Count_Envir(tree->cell, root);
+    tree->cell->time_live += 0.005;
     tree->cell->envir = envir;
     if (envir != 2 && envir != 3)
     {
@@ -510,6 +524,7 @@ void MainCountEnvir(Tree* tree, List** dielist, List** bornlist, Tree* root)
                         Dopcell->coor_x = tree->cell->coor_x + i;
                         Dopcell->coor_y = tree->cell->coor_y + j;
                         Dopcell->Aver = Averaga(Dopcell->coor_x, Dopcell->coor_y);
+                        Dopcell->time_live = 0;
                         char dopenvir = Count_Envir(Dopcell, root);
                         if (dopenvir == 3)
                         {
@@ -927,6 +942,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         cell->coor_x = xPos1;
                         cell->coor_y = yPos1;
                         cell->Aver = Averaga(xPos1, yPos1);
+                        cell->time_live = 0;
                         LiveTree = Add(cell, LiveTree);
                     }
                     else
