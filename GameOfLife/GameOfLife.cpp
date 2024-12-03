@@ -966,9 +966,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
             MainCountEnvir(LiveTree, &Doomed_to_die, &Children, LiveTree);
-            
-            LiveTree = MainBorner(LiveTree, Children);
             LiveTree = MainKiller(LiveTree, Doomed_to_die);
+            LiveTree = MainBorner(LiveTree, Children);
+            
             Doomed_to_die = ClearList(Doomed_to_die);
             Children = ClearList(Children);
 
