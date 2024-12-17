@@ -96,7 +96,7 @@ List* AddL(Cell* cell, List* list)
 
 int Averaga(int x, int y)
 {
-    return ((200+x) * 1000) + 200+y; // unique number for every cell, it woks like "hash" function
+    return ((200+x) * 1000) + 200+y; // unique number for every cell, it works like "hash" function
 }
 
 Tree* CreateNode(Cell* cell)
@@ -548,7 +548,7 @@ void MainCountEnvir(Tree* tree, List** dielist, List** bornlist, Tree* root)
     tree->cell->time_live += 0.005; // updating cell statistics
     tree->cell->envir = envir;
 
-    if (envir != 2 && envir != 3)
+    if (envir != 2 && envir != 3) // cell shuld die
     {
         *dielist = AddL(tree->cell, *dielist); // cell's dying
     }
