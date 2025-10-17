@@ -128,6 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,6 +144,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,21 +157,23 @@
   <ItemGroup>
     <ClInclude Include="ButtonStart.h" />
     <ClInclude Include="Cell.h" />
-    <ClInclude Include="Colors.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameOfLife.h" />
-    <ClInclude Include="GoLGraphicsCore.h" />
     <ClInclude Include="GraphicClass.h" />
+    <ClInclude Include="GraphicCore.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Coordinate.h" />
+    <ClInclude Include="Visual.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ButtonStart.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="GameOfLife.cpp" />
+    <ClCompile Include="GraphicCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameOfLife.rc" />

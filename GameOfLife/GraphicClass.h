@@ -1,20 +1,27 @@
 #pragma once
 #include <iostream>
 #include "Coordinate.h"
-#include "Colors.h"
+#include "Visual.h"
 
 class GraphicClass
 {
 protected:
+    bool _isEnable;
     Coordinate _coor;
-    Colors _color;
+    Color _color;
+    Outline _outline;
 public:
-    GraphicClass() : _coor(), _color(Colors::Empty) {}
-
-    GraphicClass(Coordinate coor, Colors color)
-        : _coor(coor), _color(color){
+    GraphicClass(Coordinate coor, Color color)
+        : _coor(coor), _color(color), _outline(Outline()), _isEnable(1){
     }
+    GraphicClass(Coordinate coor, Color color, Outline outline)
+        : _coor(coor), _color(color), _outline(Outline(outline)), _isEnable(1) {}
     virtual ~GraphicClass() = default;
     Coordinate coor() const { return _coor; }
-    Colors color() const { return _color; }
+    Color color() const { return _color; }
+    Outline outline() const { return _outline; }
+    bool isEnable() const { return _isEnable; }
+    void Enable() { _isEnable = true; }
+    void Disable() { _isEnable = false; }
+
 };
