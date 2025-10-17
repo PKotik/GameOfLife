@@ -37,30 +37,6 @@ void PaintField()
         }
     }
 }
-/*void PaintField()
-{
-    int count_x = 2 * scale_x + 1; // all x coords
-    int count_y = 2 * scale_y + 1; // all y coords
-    int total_iterations = count_x * count_y; // all coords for field
-
-    for (int i = 0; i < total_iterations; i++)
-    {
-        int current_x = i / count_y; 
-        int current_y = i % count_y; 
-
-        float x = -scale_x + current_x; // index of the vertical coord on the field
-        float y = -scale_y + current_y; // index of the horisontal coord on the field
-
-        glBegin(GL_QUADS);
-        glColor3f(0.1f, 0.1f, 0.1f);
-        glVertex2f(x / scale_x - radius_field, y / scale_y - radius_field);
-        glVertex2f(x / scale_x - radius_field, y / scale_y + radius_field); 
-        glVertex2f(x / scale_x + radius_field, y / scale_y + radius_field);
-        glVertex2f(x / scale_x + radius_field, y / scale_y - radius_field);
-        glEnd(); 
-    }
-}
-*/
 
 struct Tree
 {
@@ -333,28 +309,6 @@ int Count_Envir(Cell *cell, Tree *tree)
     return count;
 }
 
-/*int Count_Envir(Cell *cell, Tree *tree) {
-    if (cell == NULL || tree == NULL) { 
-        return 0; 
-    }
-
-    int count = 0;
-    int offsets[8][2] = { 
-        {-1, 1}, {-1, 0}, {-1, -1},
-        {0, 1},           {0, -1},  // all possible positions for neighbors
-        {1, 1},  {1, 0},  {1, -1}  
-    };
-
-    for (int i = 0; i < 8; i++) {
-        if (Search(cell->coor_x + offsets[i][0], cell->coor_y + offsets[i][1], tree) != NULL) { // searching for envirs of the cell
-            count++;
-        }
-    }
-
-    return count; // return number of neighbors
-}
-*/
-
 void Random_Generation(Tree** tree )
 {
     int x; int y; int z;
@@ -456,40 +410,6 @@ void Create_Shape(int speedxPos0, int speedyPos0, int num_shape, Shapes Shape)
     }
 }
 
-/*void Create_Shape(int speedxPos0, int speedyPos0, int num_shape, Shapes Shape)
-{
-    const int (*shapeArray)[2] = NULL;
-
-    switch (num_shape)
-    {
-        case 1: shapeArray = Shape.Glider; break;
-        case 2: shapeArray = Shape.GliderCannon; break;
-        case 3: shapeArray = Shape.Pulsar; break;
-        case 4: shapeArray = Shape.Prison; break;
-        case 5: shapeArray = Shape.Horse; break;
-        default: return; 
-    }
-
-    for (int i = 0; i < 40; i++)
-    {
-        if (shapeArray[i][0] == 111) break;
-
-        Cell* cell = (Cell*)malloc(sizeof(Cell)); 
-        if (cell == NULL)
-        {
-            perror("Failed to allocate memory for Cell"); // checking for enough memory
-            exit(EXIT_FAILURE);
-        }
-
-        cell->coor_x = speedxPos0 + shapeArray[i][0];
-        cell->coor_y = speedyPos0 + shapeArray[i][1];
-        cell->Aver = Averaga(cell->coor_x, cell->coor_y);
-        cell->time_live = 0;
-
-        LiveTree = Add(cell, LiveTree);
-    }
-}
-*/
 List* Children = NULL;
 
 
@@ -538,65 +458,6 @@ void MainCountEnvir(Tree* tree, List** dielist, List** bornlist, Tree* root)
     MainCountEnvir(tree->left, dielist, bornlist, root);
     MainCountEnvir(tree->right, dielist, bornlist, root);
 }
-
-/*void MainCountEnvir(Tree* tree, List** dielist, List** bornlist, Tree* root)
-{
-    if (tree == NULL) return; 
-    
-    char envir = Count_Envir(tree->cell, root); // envir for cell
-
-    tree->cell->time_live += 0.005; // updating cell statistics
-    tree->cell->envir = envir;
-
-    if (envir != 2 && envir != 3) // cell shuld die
-    {
-        *dielist = AddL(tree->cell, *dielist); // cell's dying
-    }
-
-    if (envir < 8) // envir is good, we can go on checking
-    {
-        for (int i = -1; i <= 1; i++) // watching all neighbours
-        {
-            for (int j = -1; j <= 1; j++)
-            {
-                if (i == 0 && j == 0) continue; // skipping our cell
-
-                int neighbor_x = tree->cell->coor_x + i;
-                int neighbor_y = tree->cell->coor_y + j;
-
-                if (Search(neighbor_x, neighbor_y, root) == NULL) // checking, that neighbour cell is not empty
-                {
-                    Cell* Dopcell = (Cell*)malloc(sizeof(Cell)); // creating new cell
-                    if (Dopcell == NULL) // memory error check
-                    {
-                        perror("Ошибка выделения памяти для новой клетки.");
-                        exit(EXIT_FAILURE);
-                    }
-
-                    Dopcell->coor_x = neighbor_x; 
-                    Dopcell->coor_y = neighbor_y; 
-                    Dopcell->Aver = Averaga(Dopcell->coor_x, Dopcell->coor_y);
-                    Dopcell->time_live = 0;
-
-                    char dopenvir = Count_Envir(Dopcell, root); // counting envir for new cell
-
-                    if (dopenvir == 3) // checking for good envir
-                    {
-                        *bornlist = AddL(Dopcell, *bornlist);
-                    }
-                    else
-                    {
-                        free(Dopcell); // if there is no borned cell, we
-                    }
-                }
-            }
-        }
-    }
-
-    MainCountEnvir(tree->left, dielist, bornlist, root); // doing the same with the left side of the tree
-    MainCountEnvir(tree->right, dielist, bornlist, root); // doing the same with the right side of the tree
-}
-*/
 
 
 Tree* MainKiller(Tree* tree,  List* list)
@@ -722,7 +583,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
-        char string = 's';
         srand(time(0));
         glfwGetCursorPos(window, &speedxPos, &speedyPos);
         speedxPos0 = (((speedxPos - resolution_x / 2) / (resolution_x / 2)));
