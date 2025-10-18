@@ -13,9 +13,11 @@ namespace Constants
 	const Outline CellOutline(0.001, OutlineCellColor);
 	const Outline FieldOutline(0.00225, OutlineFieldColor);
 
+	const float EPS = 1e-6f;
 	const double MomentForCell = 0.005;
 	const float lenXCell = 0.020;
 	const float lenYCell = 0.020;
 	const float lenXField = 0.0225;
 	const float lenYField = 0.0225;
+	const float Step = 0.025;
 }

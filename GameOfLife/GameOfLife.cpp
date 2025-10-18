@@ -10,6 +10,7 @@
 #include "ButtonStart.h"
 #include "Data.h"
 #include "GraphicCore.h"
+#include "StructureCore.h"
 
 
 float radius = 0.0170/2;
@@ -484,25 +485,31 @@ using namespace std::chrono;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     int k;
-
+    StructureCore structureCore;
     Cell cell(0.5, 0.5);
     Cell cell2(0.525, 0.5);
     Cell cell3(0.5, 0.525);
     Cell cell4(0.550, 0.550);
+    structureCore.Add(cell);
+    structureCore.Add(cell2);
+    structureCore.Add(cell3);
+    structureCore.Add(cell4);
     while (GraphicCore::WindowIsAlive())
     {   
-
+        
         for (float i = -1; i < 1; i += 0.025)
         {
             for (float j = -1; j < 1; j += 0.025)
+            {
                 GraphicCore::Draw(GraphicClass(Coordinate(i, j, Constants::lenXField, Constants::lenXField),
                     Constants::FieldColor, Constants::FieldOutline));
+                Cell* now_cell = structureCore.Find(Coordinate(i,j));
+                if (now_cell != nullptr)
+                {
+                    GraphicCore::Draw(*now_cell);
+                }
+            }
         }
-
-        GraphicCore::Draw(cell);
-        GraphicCore::Draw(cell2);
-        GraphicCore::Draw(cell3);
-        GraphicCore::Draw(cell4);
 
         GraphicCore::RefreshFrame();
     }

@@ -1,9 +1,10 @@
 #pragma once
 #include "Coordinate.h"
 #include "GraphicClass.h"
+#include "ObjectWithId.h"
 #include "Constants.h"
 
-class Cell : public GraphicClass
+class Cell : public GraphicClass, public ObjectWithId
 {
 private:
 	double _lifetime;
@@ -12,7 +13,13 @@ private:
 public:
 	Cell(float x, float y) : GraphicClass(Coordinate(x, y, Constants::lenXCell, Constants::lenYCell),
 		Constants::CellColor, Constants::CellOutline),
-		_lifetime(0), _envir(0), _isDead(0) {}
+		_lifetime(0), _envir(0), _isDead(0), ObjectWithId(x, y) { }
+	Cell(Coordinate coor) : GraphicClass(coor,
+		Constants::CellColor, Constants::CellOutline),
+		_lifetime(0), _envir(0), _isDead(0), ObjectWithId(coor.X(), coor.Y()) {
+		_coor.lenX(Constants::lenXCell);
+		_coor.lenY(Constants::lenYCell);
+	}
 
 	// lifetime
 	double Lifetime() const { return _lifetime; }
@@ -35,4 +42,6 @@ public:
 #endif
 		_envir = count;
 	}
+
+	Cell operator=(const Cell& cell) { return Cell(cell); }
 };
