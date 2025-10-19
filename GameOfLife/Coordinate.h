@@ -11,8 +11,7 @@ public:
     Coordinate() : coor_x(0), coor_y(0), len_x(0), len_y(0) {}
     Coordinate(float x, float y) : coor_x(x), coor_y(y), len_x(0), len_y(0) {}
     Coordinate(float x, float y, float lx, float ly)
-        : coor_x(x), coor_y(y), len_x(lx), len_y(ly) {
-    }
+        : coor_x(x), coor_y(y), len_x(lx), len_y(ly) {}
     ~Coordinate() = default;
 
     // get

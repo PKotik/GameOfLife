@@ -65,10 +65,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 Coordinate coor = InputCore::GetCursorCoordinates();
                 if (structure.IsIt(coor))
                 {
-                    structure.Remove(coor);
                     break;
                 }
                 structure.Add(Cell(coor));
+                break;
+            }
+            case InputKey::MouseRight:
+            {
+                Coordinate coor = InputCore::GetCursorCoordinates();
+                structure.Remove(coor);
                 break;
             }
             default:
@@ -112,7 +117,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
         structure.UpdateMap();
 

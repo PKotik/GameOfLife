@@ -10,6 +10,7 @@
 enum class InputKey 
 { 
     MouseLeft,
+    MouseRight,
     Space
 };
 

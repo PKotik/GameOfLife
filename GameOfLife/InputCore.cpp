@@ -53,12 +53,13 @@ void InputCore::ProcessInput()
         }
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
         {
-
             PushEvent(InputEvent(InputKey::MouseLeft));
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
-
-
-        
+        if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
+        {
+            PushEvent(InputEvent(InputKey::MouseRight));
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
     }
 }
