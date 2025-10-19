@@ -2,7 +2,6 @@
 #include "Coordinate.h"
 #include "GraphicClass.h"
 #include "Visual.h"
-#include <GLFW/glfw3.h>
 #include <queue>
 #include <memory>
 
@@ -14,6 +13,11 @@ bool GraphicCore::WindowIsAlive()
         GLFWDeInit();
 
     return isAlive;
+}
+
+GLFWwindow* GraphicCore::GetWindow()
+{
+    return window;
 }
 
 void GraphicCore::Draw(const GraphicClass& obj)
@@ -38,26 +42,6 @@ void GraphicCore::RefreshFrame()
     glEnd();
     glfwSwapBuffers(window);
     glfwPollEvents();
-}
-
-void GraphicCore::GLFWDeInit()
-{
-    glfwTerminate();
-}
-
-
-void GraphicCore::GLWindowInit()
-{
-    isGlFWInit = glfwInit();
-    if (isGlFWInit != 1)
-        return;
-    window = glfwCreateWindow(1200, 1200, "Life", NULL, NULL);
-    if (!window)
-    {
-        GLFWDeInit();
-        return;
-    }
-    glfwMakeContextCurrent(window);
 }
 
 void GraphicCore::DrawObj(const GraphicClass& obj)

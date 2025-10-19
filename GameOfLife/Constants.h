@@ -23,4 +23,6 @@ namespace Constants
 	const int NeedForBirth = 3;
 	const int GoodForLife1 = 2;
 	const int GoodForLife2 = 3;
+	const int resolutionX = 1200;
+	const int resolutionY = 1200;
 }

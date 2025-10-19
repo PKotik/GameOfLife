@@ -9,8 +9,6 @@ class ObjectWithId
 protected:
 	int _id;
 
-    
-
     static int cellIndexX(float value)
     {
         return static_cast<int>(std::floor((value + Constants::EPS) / Constants::Step));
@@ -18,7 +16,7 @@ protected:
 
     static int cellIndexY(float value)
     {
-        return static_cast<int>(std::ceil((value - Constants::EPS) / Constants::Step)) - 1;
+        return static_cast<int>(std::floor((value - Constants::EPS) / Constants::Step)) - 1;
     }
     static int hashCoords(float x, float y)
     {
@@ -28,6 +26,15 @@ protected:
     }
 
 public:
+    static float RoundX(float x)
+    {
+        return std::floor(x / Constants::Step) * Constants::Step;
+    }
+    static float RoundY(float y)
+    {
+        return std::floor(y / Constants::Step) * Constants::Step;
+    }
+
     ObjectWithId(float x, float y)
         : _id(hashCoords(x, y)){}
     virtual ~ObjectWithId() = default;

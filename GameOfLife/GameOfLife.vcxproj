@@ -164,6 +164,7 @@
     <ClInclude Include="GraphicClass.h" />
     <ClInclude Include="GraphicCore.h" />
     <ClInclude Include="InputCore.h" />
+    <ClInclude Include="MainCore.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="ObjectWithId.h" />
     <ClInclude Include="Resource.h" />
