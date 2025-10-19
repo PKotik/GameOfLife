@@ -164,7 +164,7 @@
     <ClInclude Include="GraphicClass.h" />
     <ClInclude Include="GraphicCore.h" />
     <ClInclude Include="InputCore.h" />
-    <ClInclude Include="StructureCore.h" />
+    <ClInclude Include="Structure.h" />
     <ClInclude Include="ObjectWithId.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -178,7 +178,7 @@
     <ClCompile Include="GameOfLife.cpp" />
     <ClCompile Include="GraphicCore.cpp" />
     <ClCompile Include="InputCore.cpp" />
-    <ClCompile Include="StructureCore.cpp" />
+    <ClCompile Include="Structure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameOfLife.rc" />

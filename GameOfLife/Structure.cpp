@@ -1,22 +1,22 @@
-#include "StructureCore.h"
+#include "Structure.h"
 #include "Cell.h"
 #include "ObjectWithId.h"
 
-void StructureCore::Add(const Cell& cell)
+void Structure::Add(const Cell& cell)
 {
     objectMap.insert({cell.Id(), cell});
 }
 
-void StructureCore::AddLater(const Cell& obj)
+void Structure::AddLater(const Cell& obj)
 {
     newLifeQueue.push(obj);
 }
 
-Cell* StructureCore::Find(Coordinate coor)
+Cell* Structure::Find(Coordinate coor)
 {
     return Find(ObjectWithId::MakeId(coor));
 }
-Cell* StructureCore::Find(int id)
+Cell* Structure::Find(int id)
 {
     auto it = objectMap.find(id);
     if (it != objectMap.end())
@@ -24,21 +24,21 @@ Cell* StructureCore::Find(int id)
     return nullptr;
 }
 
-bool StructureCore::IsIt(Coordinate coor)
+bool Structure::IsIt(Coordinate coor)
 {
     return IsIt(ObjectWithId::MakeId(coor));
 }
-bool StructureCore::IsIt(int id)
+bool Structure::IsIt(int id)
 {
     return objectMap.find(id) != objectMap.end();
 }
 
-void StructureCore::Remove(Coordinate coor)
+void Structure::Remove(Coordinate coor)
 {
     Remove(ObjectWithId::MakeId(coor));
 }
 
-void StructureCore::Remove(int id)
+void Structure::Remove(int id)
 {
     auto it = objectMap.find(id);
     if (it != objectMap.end())
@@ -47,17 +47,17 @@ void StructureCore::Remove(int id)
     }
 }
 
-void StructureCore::RemoveLater(Coordinate coor)
+void Structure::RemoveLater(Coordinate coor)
 {
     RemoveLater(ObjectWithId::MakeId(coor));
 }
 
-void StructureCore::RemoveLater(int id)
+void Structure::RemoveLater(int id)
 {
     dyingQueue.push(id);
 }
 
-void StructureCore::UpdateMap()
+void Structure::UpdateMap()
 {
     while (!newLifeQueue.empty())
     {
@@ -69,4 +69,9 @@ void StructureCore::UpdateMap()
         Remove(dyingQueue.front());
         dyingQueue.pop();
     }
+}
+
+std::unordered_map<int, Cell>& Structure::GetAll()
+{
+    return objectMap;
 }

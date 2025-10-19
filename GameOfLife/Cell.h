@@ -30,18 +30,10 @@ public:
 	void Kill() { _isDead = true; }
 
 	// envir
-	int Envir() const { return _envir; }
-	void Envir(int count)
-	{
-#ifdef _DEBUG
-		if (count < 0 || count > 8)
-			throw std::invalid_argument("value must be from 0 to 8");
-#else
-		if (count < 0 || count > 8)
-			count = 0;
-#endif
-		_envir = count;
-	}
+	bool GoodForBirth() const { return _envir == Constants::NeedForBirth; }
+	bool GoodForLife() const { return _envir == Constants::GoodForLife1 || _envir == Constants::GoodForLife2; }
+	void UpEnvir() { ++_envir; }
+	void ResetEnvir() { _envir = 0; }
 
 	Cell operator=(const Cell& cell) { return Cell(cell); }
 };

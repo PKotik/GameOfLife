@@ -10,7 +10,7 @@
 #include "ButtonStart.h"
 #include "Data.h"
 #include "GraphicCore.h"
-#include "StructureCore.h"
+#include "Structure.h"
 
 
 float radius = 0.0170/2;
@@ -485,31 +485,62 @@ using namespace std::chrono;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     int k;
-    StructureCore structureCore;
+    Structure structure;
     Cell cell(0.5, 0.5);
-    Cell cell2(0.525, 0.5);
-    Cell cell3(0.5, 0.525);
-    Cell cell4(0.550, 0.550);
-    structureCore.Add(cell);
-    structureCore.Add(cell2);
-    structureCore.Add(cell3);
-    structureCore.Add(cell4);
+    Cell cell2(0.525, 0.475);
+    Cell cell3(0.55, 0.475);
+    Cell cell4(0.55, 0.5);
+    Cell cell5(0.55, 0.525);
+    structure.Add(cell);
+    structure.Add(cell2);
+    structure.Add(cell3);
+    structure.Add(cell4);
+    structure.Add(cell5);
     while (GraphicCore::WindowIsAlive())
-    {   
-        
+    {     
+
         for (float i = -1; i < 1; i += 0.025)
         {
             for (float j = -1; j < 1; j += 0.025)
             {
                 GraphicCore::Draw(GraphicClass(Coordinate(i, j, Constants::lenXField, Constants::lenXField),
                     Constants::FieldColor, Constants::FieldOutline));
-                Cell* now_cell = structureCore.Find(Coordinate(i,j));
-                if (now_cell != nullptr)
-                {
-                    GraphicCore::Draw(*now_cell);
-                }
             }
         }
+
+        for (auto& [id, cell] : structure.GetAll())
+        {
+            GraphicCore::Draw(cell);
+            std::array<Coordinate, 8> arr = Coordinate::GetAdjCoors(cell.coor());
+            for (auto& coor : arr)
+            {
+                Cell newCell(coor);
+                if (structure.IsIt(coor))
+                {
+                    cell.UpEnvir();
+                }
+                std::array<Coordinate, 8> newArr = Coordinate::GetAdjCoors(newCell.coor());
+                for (auto& newCoor : newArr)
+                {
+                    if (structure.IsIt(newCoor))
+                    {
+                        newCell.UpEnvir();
+                    }
+                }
+                if (newCell.GoodForBirth())
+                {
+                    newCell.ResetEnvir();
+                    structure.AddLater(newCell);
+                }            
+            }
+            if (!cell.GoodForLife())
+                structure.RemoveLater(cell.coor());
+            cell.ResetEnvir();
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        structure.UpdateMap();
 
         GraphicCore::RefreshFrame();
     }

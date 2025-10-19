@@ -1,4 +1,7 @@
 #pragma once
+#include "Constants.h"
+#include <array>
+
 class Coordinate
 {
 private:
@@ -28,5 +31,20 @@ public:
     bool operator==(const Coordinate& coor) const {
         return (coor_x >= coor.X() && coor_x <= coor.farX()) &&
             (coor_y >= coor.Y() && coor_y <= coor.farY());
+    }
+
+    static std::array<Coordinate, 8> GetAdjCoors(Coordinate coor)
+    {
+        std::array<Coordinate, 8> arr;
+        int index = 0;
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = 1; j >= -1; j--)
+            {
+                if (i == 0 && j == 0) continue;
+                arr[index++] = Coordinate(coor.X() + Constants::Step * i, coor.Y() + Constants::Step * j);
+            }
+        }
+        return arr;
     }
 };

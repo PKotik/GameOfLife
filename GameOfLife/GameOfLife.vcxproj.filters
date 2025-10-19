@@ -42,9 +42,6 @@
     <ClInclude Include="Data.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicClass.h">
       <Filter>Файлы заголовков\Core</Filter>
     </ClInclude>
@@ -60,11 +57,14 @@
     <ClInclude Include="InputCore.h">
       <Filter>Файлы заголовков\Core</Filter>
     </ClInclude>
-    <ClInclude Include="StructureCore.h">
-      <Filter>Файлы заголовков\Core</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectWithId.h">
       <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Structure.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,8 +86,8 @@
     <ClCompile Include="InputCore.cpp">
       <Filter>Исходные файлы\Core</Filter>
     </ClCompile>
-    <ClCompile Include="StructureCore.cpp">
-      <Filter>Исходные файлы\Core</Filter>
+    <ClCompile Include="Structure.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

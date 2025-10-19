@@ -6,7 +6,7 @@
 #include <queue>
 #include <memory>
 
-class StructureCore
+class Structure
 {
 private:
     std::unordered_map<int, Cell> objectMap;
@@ -14,8 +14,8 @@ private:
     inline static std::queue<int> dyingQueue;
     
 public:
-    StructureCore() = default;
-    ~StructureCore() = default;
+    Structure() = default;
+    ~Structure() = default;
 
     void Add(const Cell& obj);
     void AddLater(const Cell& obj);
@@ -28,5 +28,6 @@ public:
     void RemoveLater(Coordinate coor);
     void RemoveLater(int id);
     void UpdateMap();
+    std::unordered_map<int, Cell>& GetAll();
 };
 

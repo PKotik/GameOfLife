@@ -20,4 +20,7 @@ namespace Constants
 	const float lenXField = 0.0225;
 	const float lenYField = 0.0225;
 	const float Step = 0.025;
+	const int NeedForBirth = 3;
+	const int GoodForLife1 = 2;
+	const int GoodForLife2 = 3;
 }
