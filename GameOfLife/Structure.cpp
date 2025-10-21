@@ -9,7 +9,7 @@ void Structure::Add(const Cell& cell)
 
 void Structure::AddLater(const Cell& obj)
 {
-    newLifeQueue.push(obj); // TODO : Сделать, если уже есть, чтоб не пушилось в очередь
+    if (!IsIt(obj.coor())) newLifeQueue.push(obj);
 }
 
 Cell* Structure::Find(Coordinate coor)

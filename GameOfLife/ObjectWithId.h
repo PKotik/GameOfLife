@@ -16,7 +16,7 @@ protected:
 
     static int cellIndexY(float value)
     {
-        return static_cast<int>(std::floor((value - Constants::EPS) / Constants::Step)) - 1;
+        return static_cast<int>(std::floor((value - Constants::EPS) / Constants::Step));
     }
     static int hashCoords(float x, float y)
     {
@@ -28,11 +28,11 @@ protected:
 public:
     static float RoundX(float x)
     {
-        return std::floor(x / Constants::Step) * Constants::Step;
+        return std::floor((x + Constants::EPS) / Constants::Step) * Constants::Step;
     }
     static float RoundY(float y)
     {
-        return std::floor(y / Constants::Step) * Constants::Step;
+        return std::floor((y - Constants::EPS) / Constants::Step) * Constants::Step;
     }
 
     ObjectWithId(float x, float y)
