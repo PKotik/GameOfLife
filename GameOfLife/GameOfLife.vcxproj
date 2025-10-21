@@ -155,7 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ButtonStart.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Data.h" />
@@ -173,8 +173,7 @@
     <ClInclude Include="Visual.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ButtonStart.cpp" />
-    <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="GameOfLife.cpp" />
     <ClCompile Include="GraphicCore.cpp" />

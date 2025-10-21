@@ -22,7 +22,7 @@ protected:
     {
         int ix = cellIndexX(x);
         int iy = cellIndexY(y);
-        return (ix * 73856093) ^ (iy * 19349663);
+        return ((100 + ix) * 100) + (100 + iy);
     }
 
 public:

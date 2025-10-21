@@ -31,7 +31,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     structure.Add(cell6);
     structure.Add(cell7);
 
-    bool go = false; //TODO : подумать как лучше 
+    bool go = false; //TODO : подумать как лучше - можно вынести в отдельынй класс, где будет вся инфа о игре - поколение, текущая скорость и т.д.
 
     InputCore::Start();
 
