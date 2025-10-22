@@ -1,18 +1,18 @@
-﻿#include "Cell.h"
-#include <winuser.h>
-#include "GraphicCore.h"
-#include "Structure.h"
-#include "InputCore.h"
-#include "Button.h"
-#include "GameInfo.h"
-#include <iostream>
+﻿#include <iostream>
+#include "Cell.h"
 #include <chrono>
 #include <thread>
 #include <windows.h>
 #include <windowsx.h>
 #include <conio.h>
+#include <winuser.h>
 #include <cmath>
 #include "Data.h"
+#include "GraphicCore.h"
+#include "Structure.h"
+#include "InputCore.h"
+#include "GameInfo.h"
+#include "Button.h"
 
 static void Start()
 {
