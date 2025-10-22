@@ -1,38 +1,33 @@
-﻿#include <iostream>
-#include "Cell.h"
+﻿#include "Cell.h"
+#include <winuser.h>
+#include "GraphicCore.h"
+#include "Structure.h"
+#include "InputCore.h"
+#include "Button.h"
+#include "GameInfo.h"
+#include <iostream>
 #include <chrono>
 #include <thread>
 #include <windows.h>
 #include <windowsx.h>
 #include <conio.h>
-#include <winuser.h>
 #include <cmath>
-#include "ButtonStart.h"
 #include "Data.h"
-#include "GraphicCore.h"
-#include "Structure.h"
-#include "InputCore.h"
+
+static void Start()
+{
+    GameInfo::Continue();
+}
+static void Stop()
+{
+    GameInfo::Pause();
+}
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     Structure structure;
-    Cell cell(0.5, 0.5);
-    Cell cell2(0.525, 0.475);
-    Cell cell3(0.55, 0.475);
-    Cell cell4(0.55, 0.5);
-    Cell cell5(0.55, 0.525);
-    Cell cell6(0.1, 0.1);
-    Cell cell7(0.1, 0.125);
-    structure.Add(cell);
-    structure.Add(cell2);
-    structure.Add(cell3);
-    structure.Add(cell4);
-    structure.Add(cell5);
-    structure.Add(cell6);
-    structure.Add(cell7);
-
-    bool go = false; //TODO : подумать как лучше - можно вынести в отдельынй класс, где будет вся инфа о игре - поколение, текущая скорость и т.д.
-
+    Button StartStopButton("Button_Start_Stop", Coordinate(-0.95, -0.95, 0.3, 0.2), Constants::ButtonStartColor, Start, Stop);
     InputCore::Start();
 
     while (GraphicCore::WindowIsAlive())
@@ -57,12 +52,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             {
             case InputKey::Space:
             {
-                go = !go;
+                GameInfo::ReversePause();
                 break;
             }
             case InputKey::MouseLeft:
             {
                 Coordinate coor = InputCore::GetCursorCoordinates();
+                if (coor == StartStopButton.coor())
+                {
+                    StartStopButton.Do();
+                    break;
+                }
                 if (structure.IsIt(coor))
                 {
                     break;
@@ -87,7 +87,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         {
             GraphicCore::Draw(cell);
 
-            if (go)
+            if (!GameInfo::IsPause())
             {
                 std::array<Coordinate, 8> arr = Coordinate::GetAdjCoors(cell.coor());
                 for (auto& coor : arr)
@@ -114,12 +114,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 if (!cell.GoodForLife())
                     structure.RemoveLater(cell.coor());
                 cell.ResetEnvir();
+                GameInfo::NewGeneration();
             }
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for((GameInfo::Speed()));
 
         structure.UpdateMap();
+
+        GraphicCore::Draw(StartStopButton);
 
         GraphicCore::RefreshFrame();
     }

@@ -1,5 +1,6 @@
 #pragma once
 #include "Visual.h"
+#include <chrono>
 
 namespace Constants
 {
@@ -10,8 +11,12 @@ namespace Constants
 	const Color FieldColor(210, 230, 255);
 	const Color OutlineFieldColor(175, 191, 213);
 
+	const Color OutlineButtonColor(67, 67, 67);
+	const Color ButtonStartColor(240, 240, 240);
+
 	const Outline CellOutline(0.001, OutlineCellColor);
 	const Outline FieldOutline(0.00225, OutlineFieldColor);
+	const Outline ButtonOutline(0.008, OutlineButtonColor);
 
 	const float EPS = 0.00005;
 	const double MomentForCell = 0.005;
@@ -25,4 +30,6 @@ namespace Constants
 	const int GoodForLife2 = 3;
 	const int resolutionX = 1200;
 	const int resolutionY = 1200;
+
+	const std::chrono::milliseconds DefaultTimeOut(100);
 }

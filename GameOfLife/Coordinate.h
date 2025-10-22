@@ -30,7 +30,7 @@ public:
     bool operator==(const Coordinate& coor) const 
     {
         return (coor_x + Constants::EPS >= coor.X() && coor_x <= coor.farX() + Constants::EPS) &&
-            (coor_y - Constants::EPS <= coor.Y() && coor_y >= coor.farY() - Constants::EPS);
+            (coor_y + Constants::EPS >= coor.Y() && coor_y <= coor.farY() + Constants::EPS);
     }
 
     static std::array<Coordinate, 8> GetAdjCoors(Coordinate coor)
