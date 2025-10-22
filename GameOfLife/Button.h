@@ -42,8 +42,22 @@ public:
 	bool State() const { return _state; }
 	bool Selected() const { return _selected; }
 
-	void Select() { _selected = true; }
-	void NotSelect() { _selected = false; }
+	void Select(Color selectColor) 
+	{
+		if (!_selected)
+		{
+			_selected = true;
+			_color = selectColor;
+		}
+	}
+	void NotSelect(Color deafColor)
+	{ 
+		if (_selected)
+		{
+			_selected = false;
+			_color = deafColor;
+		}
+	}
 	void ON() { _state = true; }
 	void OFF() { _state = false; }
 

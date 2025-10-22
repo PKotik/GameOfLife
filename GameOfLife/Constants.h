@@ -12,11 +12,12 @@ namespace Constants
 	const Color OutlineFieldColor(175, 191, 213);
 
 	const Color OutlineButtonColor(67, 67, 67);
-	const Color ButtonStartColor(240, 240, 240);
+	const Color ButtonDefColor(240, 240, 240);
+	const Color ButtonDefSelectColor(227, 227, 240);
 
 	const Outline CellOutline(0.001, OutlineCellColor);
 	const Outline FieldOutline(0.00225, OutlineFieldColor);
-	const Outline ButtonOutline(0.008, OutlineButtonColor);
+	const Outline ButtonOutline(0.004, OutlineButtonColor);
 
 	const float EPS = 0.00005;
 	const double MomentForCell = 0.005;

@@ -19,6 +19,7 @@ public:
     virtual ~GraphicClass() = default;
     Coordinate coor() const { return _coor; }
     Color color() const { return _color; }
+    void color(Color color) { _color = Color(color); }
     Outline outline() const { return _outline; }
     bool isEnable() const { return _isEnable; }
     void Enable() { _isEnable = true; }

@@ -23,11 +23,10 @@ static void Stop()
     GameInfo::Pause();
 }
 
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     Structure structure;
-    Button StartStopButton("Button_Start_Stop", Coordinate(-0.95, -0.95, 0.3, 0.2), Constants::ButtonStartColor, Start, Stop);
+    Button StartStopButton("Button_Start_Stop", Coordinate(-0.98, -0.98, 0.15, 0.055), Constants::ButtonDefColor, Start, Stop);
     InputCore::Start();
 
     while (GraphicCore::WindowIsAlive())
@@ -80,6 +79,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 break;
             }
         }
+
+        Coordinate coor = InputCore::GetCursorCoordinates();
+        if (coor == StartStopButton.coor())
+            StartStopButton.Select(Constants::ButtonDefSelectColor);
+        else
+            StartStopButton.NotSelect(Constants::ButtonDefColor);
+
 
         // TODO : продумать, чтобы те, что уходят далеко, не существовали 
 
