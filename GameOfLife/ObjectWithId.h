@@ -35,6 +35,13 @@ public:
         return std::floor((y - Constants::EPS) / Constants::Step) * Constants::Step;
     }
 
+    static Coordinate RoundCoor(Coordinate coor)
+    {
+        coor.X(std::floor((coor.X() + Constants::EPS) / Constants::Step) * Constants::Step);
+        coor.Y(std::floor((coor.Y() - Constants::EPS) / Constants::Step) * Constants::Step);
+        return coor;
+    }
+
     ObjectWithId(float x, float y)
         : _id(hashCoords(x, y)){}
     virtual ~ObjectWithId() = default;

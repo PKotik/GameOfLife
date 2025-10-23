@@ -7,6 +7,12 @@ void Structure::Add(const Cell& cell)
     objectMap.insert({cell.Id(), cell});
 }
 
+void Structure::AddMany(const std::vector<Cell> cells)
+{
+    for (auto& cell : cells)
+        Add(cell);
+}
+
 void Structure::AddLater(const Cell& obj)
 {
     if (!IsIt(obj.coor())) newLifeQueue.push(obj);
@@ -55,6 +61,11 @@ void Structure::RemoveLater(Coordinate coor)
 void Structure::RemoveLater(int id)
 {
     dyingQueue.push(id);
+}
+
+void Structure::RemoveAll()
+{
+    objectMap.clear();
 }
 
 void Structure::UpdateMap()

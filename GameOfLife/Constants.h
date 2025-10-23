@@ -14,6 +14,8 @@ namespace Constants
 	const Color OutlineButtonColor(67, 67, 67);
 	const Color ButtonDefColor(240, 240, 240);
 	const Color ButtonDefSelectColor(227, 227, 240);
+	const Color ButtonClearColor(88, 111, 125);
+	const Color ButtonSelectClearColor(104, 133, 162);
 
 	const Outline CellOutline(0.001, OutlineCellColor);
 	const Outline FieldOutline(0.00225, OutlineFieldColor);
@@ -32,8 +34,10 @@ namespace Constants
 	const int resolutionX = 1200;
 	const int resolutionY = 1200;
 
-	const std::chrono::milliseconds DefaultTimeOut(100);
+	const std::chrono::milliseconds DefaultTimeOut(200);
+	const std::chrono::milliseconds CreateCellClickTimeOut(1);
 	const std::chrono::milliseconds SpeedTimeOut(20);
+	const std::chrono::milliseconds RandomTimeOut(1000);
 
 	const std::chrono::milliseconds SpeedStep(10);
 }

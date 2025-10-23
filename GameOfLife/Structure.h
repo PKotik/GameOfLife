@@ -5,6 +5,7 @@
 #include "Cell.h"
 #include <queue>
 #include <memory>
+#include <vector>
 
 class Structure
 {
@@ -18,15 +19,17 @@ public:
     ~Structure() = default;
 
     void Add(const Cell& obj);
+    void AddMany(const std::vector<Cell> cells);
     void AddLater(const Cell& obj);
-    Cell* Find(Coordinate coor); // TODO: подумать, а надо ли вообще *?
-    Cell* Find(int id); // TODO: подумать, а надо ли вообще *?
+    Cell* Find(Coordinate coor);
+    Cell* Find(int id);
     bool IsIt(Coordinate coor);
     bool IsIt(int id);
     void Remove(Coordinate coor);
     void Remove(int id);
     void RemoveLater(Coordinate coor);
     void RemoveLater(int id);
+    void RemoveAll();
     void UpdateMap();
     std::unordered_map<int, Cell>& GetAll();
 };

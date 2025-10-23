@@ -49,17 +49,22 @@ void InputCore::ProcessInput()
         if (GetAsyncKeyState(VK_SPACE) & 0x8000)
         {
             PushEvent(InputEvent(InputKey::Space));
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+            std::this_thread::sleep_for(std::chrono::milliseconds(Constants::DefaultTimeOut));
         }
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
         {
             PushEvent(InputEvent(InputKey::MouseLeft));
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(Constants::CreateCellClickTimeOut));
         }
         if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
         {
             PushEvent(InputEvent(InputKey::MouseRight));
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(Constants::CreateCellClickTimeOut));
+        }
+        if (GetAsyncKeyState(VK_DELETE) & 0x8000)
+        {
+            PushEvent(InputEvent(InputKey::Delete));
+            std::this_thread::sleep_for(std::chrono::milliseconds(Constants::DefaultTimeOut));
         }
     }
 }

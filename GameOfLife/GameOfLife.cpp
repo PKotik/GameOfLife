@@ -14,7 +14,10 @@
 #include "InputCore.h"
 #include "GameInfo.h"
 #include "Button.h"
+#include <random>
 
+
+Structure structure;
 
 static void Start()
 {
@@ -32,19 +35,52 @@ static void SpeedDown()
 {
     GameInfo::SpeedDown();
 }
+static void ClearAll()
+{
+    structure.RemoveAll();
+}
+
+
+static void GenerateRandomPairs()
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> distN(500, 3000);
+    int n = distN(gen);
+    std::uniform_real_distribution<float> distFloat(-1.0f, 1.0f);
+    std::vector<Cell> result;
+    result.reserve(n);
+    for (int i = 0; i < n; ++i)
+    {
+        float x = distFloat(gen);
+        float y = distFloat(gen);
+        Coordinate coor(ObjectWithId::RoundX(x), ObjectWithId::RoundY(y));
+        result.push_back(Cell(coor));
+    }
+    structure.AddMany(result);
+}
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-    Structure structure;
-    Button StartStopButton("Button_Start_Stop", Coordinate(-0.98, -0.98, 0.15, 0.055), Constants::ButtonDefColor, Start, Stop);
-    Button SpeedUpButton("Button_Speed_Up", Coordinate(-0.98, -0.915, 0.07, 0.04), Constants::ButtonDefColor, SpeedUp, Constants::SpeedTimeOut);
-    Button SpeedDownButton("Button_Speed_Down", Coordinate(-0.90, -0.915, 0.07, 0.04), Constants::ButtonDefColor, SpeedDown, Constants::SpeedTimeOut);
+    
+    Button StartStopButton("Button_Start_Stop", Coordinate(-0.98, -0.98, 0.15, 0.055), Constants::ButtonDefColor,
+        Constants::ButtonDefSelectColor, Start, Stop);
+    Button SpeedUpButton("Button_Speed_Up", Coordinate(-0.98, -0.915, 0.07, 0.04), Constants::ButtonDefColor,
+        Constants::ButtonDefSelectColor, SpeedUp, Constants::SpeedTimeOut);
+    Button SpeedDownButton("Button_Speed_Down", Coordinate(-0.90, -0.915, 0.07, 0.04), Constants::ButtonDefColor,
+        Constants::ButtonDefSelectColor, SpeedDown, Constants::SpeedTimeOut);
+    Button RandomButton("Button_Random", Coordinate(-0.98, -0.82, 0.15, 0.055), Constants::ButtonDefColor,
+        Constants::ButtonDefSelectColor, GenerateRandomPairs, Constants::RandomTimeOut);
+    Button ClearButton("Button_Clear", Coordinate(0.83, -0.98, 0.15, 0.055), Constants::ButtonClearColor,
+        Constants::ButtonSelectClearColor, ClearAll, Constants::DefaultTimeOut);
 
     std::list<Button> Buttons;
 
     Buttons.push_back(StartStopButton);
     Buttons.push_back(SpeedUpButton);
     Buttons.push_back(SpeedDownButton);
+    Buttons.push_back(RandomButton);
+    Buttons.push_back(ClearButton);
 
     InputCore::Start();
 
@@ -97,6 +133,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 structure.Remove(coor);
                 break;
             }
+            case InputKey::Delete:
+            {
+                ClearAll();
+                break;
+            }
             default:
                 break;
             }
@@ -106,9 +147,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         for (auto& button : Buttons)
         {
             if (coor == button.coor())
-                button.Select(Constants::ButtonDefSelectColor);
+                button.Select();
             else
-                button.NotSelect(Constants::ButtonDefColor);
+                button.NotSelect();
         }
 
 
