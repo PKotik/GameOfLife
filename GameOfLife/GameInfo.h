@@ -17,6 +17,18 @@ public:
 	static void ReversePause() { _pause = !_pause; }
 
 	static std::chrono::milliseconds Speed() { return _speed; }
+	static void SpeedUp() 
+	{ 
+		_speed-=Constants::SpeedStep;
+		if (_speed < std::chrono::milliseconds(0))
+			_speed = std::chrono::milliseconds(0);
+	}
+	static void SpeedDown()
+	{
+		_speed += Constants::SpeedStep;
+		if (_speed > std::chrono::milliseconds(500))
+			_speed = std::chrono::milliseconds(500);
+	}
 
 	static void NewGeneration() { ++_generation; }
 };

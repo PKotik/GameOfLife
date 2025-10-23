@@ -18,10 +18,10 @@ class Outline
 public:
 	const bool isEnable;
 	const float Thick;
-	const Color RGB;
+	const Color ColorRGB;
 
-	Outline(): Thick(0), RGB(Color()), isEnable(0) {}
-	Outline(float th, Color color): Thick(th), RGB(color), isEnable(1) {}
+	Outline(): Thick(0), ColorRGB(Color()), isEnable(0) {}
+	Outline(float th, Color color): Thick(th), ColorRGB(color), isEnable(1) {}
 
 	Outline operator=(const Outline& outline) { return Outline(outline); }
 };

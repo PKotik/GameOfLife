@@ -50,7 +50,7 @@ void GraphicCore::DrawObj(const GraphicClass& obj)
     if (obj.outline().isEnable)
     {
         Outline outline = obj.outline();
-        SetColor(outline.RGB);
+        SetColor(outline.ColorRGB);
         glVertex2f(obj.coor().X() - outline.Thick, obj.coor().Y() - outline.Thick);
         glVertex2f(obj.coor().X() - outline.Thick, obj.coor().farY() + outline.Thick);
         glVertex2f(obj.coor().farX() + outline.Thick, obj.coor().farY() + outline.Thick);

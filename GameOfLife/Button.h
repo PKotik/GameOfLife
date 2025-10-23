@@ -29,20 +29,22 @@ private:
 	}
 
 public:
-	Button(const std::string code, Coordinate coor, Color color, std::function<void()> func)
+	Button(const std::string code, Coordinate coor, Color color, std::function<void()> func,
+					std::chrono::milliseconds timeout = std::chrono::milliseconds(Constants::DefaultTimeOut))
 		: _action(func), _secondAction(func), GraphicClass(coor, color, Constants::ButtonOutline),
 		_code(code), _state(0), _selected(0),
-		_lastPressTime(std::chrono::steady_clock::now()), _timeout(Constants::DefaultTimeOut) {}
+		_lastPressTime(std::chrono::steady_clock::now()), _timeout(timeout) {}
 
-	Button(const std::string code, Coordinate coor, Color color, std::function<void()> func1, std::function<void()> func2)
+	Button(const std::string code, Coordinate coor, Color color, std::function<void()> func1, std::function<void()> func2,
+				std::chrono::milliseconds timeout = std::chrono::milliseconds(Constants::DefaultTimeOut))
 		: _action(func1), _secondAction(func2), GraphicClass(coor, color, Constants::ButtonOutline),
 		_code(code), _state(0), _selected(0),
-		_lastPressTime(std::chrono::steady_clock::now()), _timeout(Constants::DefaultTimeOut) {}
+		_lastPressTime(std::chrono::steady_clock::now()), _timeout(timeout) {}
 
 	bool State() const { return _state; }
 	bool Selected() const { return _selected; }
 
-	void Select(Color selectColor) 
+	void Select(Color selectColor)
 	{
 		if (!_selected)
 		{

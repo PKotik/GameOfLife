@@ -33,4 +33,7 @@ namespace Constants
 	const int resolutionY = 1200;
 
 	const std::chrono::milliseconds DefaultTimeOut(100);
+	const std::chrono::milliseconds SpeedTimeOut(20);
+
+	const std::chrono::milliseconds SpeedStep(10);
 }
