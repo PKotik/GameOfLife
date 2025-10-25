@@ -12,7 +12,12 @@ enum class InputKey
     MouseLeft,
     MouseRight,
     Space,
-    Delete
+    Delete,
+    Key1,
+    Key2,
+    Key3,
+    Key4,
+    Key5
 };
 
 struct InputEvent 

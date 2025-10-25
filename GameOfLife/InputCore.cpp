@@ -66,5 +66,30 @@ void InputCore::ProcessInput()
             PushEvent(InputEvent(InputKey::Delete));
             std::this_thread::sleep_for(std::chrono::milliseconds(Constants::DefaultTimeOut));
         }
+        if (GetAsyncKeyState('1') & 0x8000)
+        {
+            PushEvent(InputEvent(InputKey::Key1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(Constants::DefaultTimeOut));
+        }
+        if (GetAsyncKeyState('2') & 0x8000)
+        {
+            PushEvent(InputEvent(InputKey::Key2));
+            std::this_thread::sleep_for(std::chrono::milliseconds(Constants::DefaultTimeOut));
+        }
+        if (GetAsyncKeyState('3') & 0x8000)
+        {
+            PushEvent(InputEvent(InputKey::Key3));
+            std::this_thread::sleep_for(std::chrono::milliseconds(Constants::DefaultTimeOut));
+        }
+        if (GetAsyncKeyState('4') & 0x8000)
+        {
+            PushEvent(InputEvent(InputKey::Key4));
+            std::this_thread::sleep_for(std::chrono::milliseconds(Constants::DefaultTimeOut));
+        }
+        if (GetAsyncKeyState('5') & 0x8000)
+        {
+            PushEvent(InputEvent(InputKey::Key5));
+            std::this_thread::sleep_for(std::chrono::milliseconds(Constants::DefaultTimeOut));
+        }
     }
 }

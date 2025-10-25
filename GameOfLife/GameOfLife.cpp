@@ -14,6 +14,7 @@
 #include "InputCore.h"
 #include "GameInfo.h"
 #include "Button.h"
+#include "SystemData.h"
 #include <random>
 
 
@@ -136,6 +137,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             case InputKey::Delete:
             {
                 ClearAll();
+                break;
+            }
+            case InputKey::Key1:
+            {
+                structure.AddMany(SystemData::Glider);
+                break;
+            }
+            case InputKey::Key2:
+            {
+                structure.AddMany(SystemData::GliderCannon);
+                break;
+            }
+            case InputKey::Key3:
+            {
+                structure.AddMany(SystemData::Pulsar);
+                break;
+            }
+            case InputKey::Key4:
+            {
+                structure.AddMany(SystemData::Prison);
+                break;
+            }
+            case InputKey::Key5:
+            {
+                structure.AddMany(SystemData::Horse);
                 break;
             }
             default:
