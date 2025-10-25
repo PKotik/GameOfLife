@@ -23,7 +23,11 @@ public:
 
 	// lifetime
 	double Lifetime() const { return _lifetime; }
-	void GrowOld() { _lifetime += Constants::MomentForCell; }
+	void GrowOld() 
+	{ 
+		_lifetime += Constants::MomentForCell; 
+		_color.Dark();
+	}
 
 	// isDead
 	bool IsDead() const { return _isDead; }
@@ -36,4 +40,5 @@ public:
 	void ResetEnvir() { _envir = 0; }
 
 	Cell operator=(const Cell& cell) { return Cell(cell); }
+
 };

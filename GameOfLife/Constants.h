@@ -12,10 +12,10 @@ namespace Constants
 	const Color OutlineFieldColor(175, 191, 213);
 
 	const Color OutlineButtonColor(67, 67, 67);
-	const Color ButtonDefColor(240, 240, 240);
-	const Color ButtonDefSelectColor(227, 227, 240);
-	const Color ButtonClearColor(88, 111, 125);
-	const Color ButtonSelectClearColor(104, 133, 162);
+	const Color ButtonDefColor(187, 218, 219);
+	const Color ButtonDefSelectColor(240, 240, 240);
+	const Color ButtonClearColor(187, 218, 219);
+	const Color ButtonSelectClearColor(240, 240, 240);
 
 	const Outline CellOutline(0.001, OutlineCellColor);
 	const Outline FieldOutline(0.00225, OutlineFieldColor);

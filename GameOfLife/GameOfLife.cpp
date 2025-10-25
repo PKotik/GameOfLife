@@ -157,10 +157,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         for (auto& [id, cell] : structure.GetAll())
         {
-            GraphicCore::Draw(cell);
 
+            GraphicCore::Draw(cell);
             if (!GameInfo::IsPause())
             {
+                cell.GrowOld();
                 std::array<Coordinate, 8> arr = Coordinate::GetAdjCoors(cell.coor());
                 for (auto& coor : arr)
                 {

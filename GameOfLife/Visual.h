@@ -11,6 +11,12 @@ public:
 	Color(const float r, const float g,const float b): R(r/255), G(g/255), B(b/255) {}
 
 	//Color operator=(const Color& color) { return Color(color); }
+	void Dark()
+	{
+		R -= static_cast<float>(1) / 255;
+		G -= static_cast<float>(1) / 255;
+		//B -= static_cast<float>(1) / 255;
+	}
 };
 
 class Outline
