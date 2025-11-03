@@ -99,6 +99,8 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ButtonTests.cpp" />
+    <ClCompile Include="CoordinateTests.cpp" />
     <ClCompile Include="IdTests.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">

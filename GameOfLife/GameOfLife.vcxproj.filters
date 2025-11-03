@@ -19,24 +19,15 @@
     <Filter Include="Исходные файлы\Core">
       <UniqueIdentifier>{f8c69476-fcef-4d8a-ab55-de8f0e220aad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Sys">
+      <UniqueIdentifier>{e1d8b120-31cc-421b-8849-49a2988a2378}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="GameOfLife.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Cell.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Data.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="GraphicClass.h">
@@ -75,12 +66,18 @@
     <ClInclude Include="SystemData.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Файлы заголовков\Sys</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Файлы заголовков\Sys</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Файлы заголовков\Sys</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameOfLife.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Data.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="GraphicCore.cpp">

@@ -158,7 +158,6 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="Constants.h" />
-    <ClInclude Include="Data.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameOfLife.h" />
     <ClInclude Include="GameInfo.h" />
@@ -176,7 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Data.cpp" />
     <ClCompile Include="GameOfLife.cpp" />
     <ClCompile Include="GraphicCore.cpp" />
     <ClCompile Include="InputCore.cpp" />

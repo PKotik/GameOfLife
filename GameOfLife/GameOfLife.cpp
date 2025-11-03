@@ -97,8 +97,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
         }
 
-        // TODO : сделать лучше
-
         while (InputCore::HasEvents())
         {
             InputEvent event = InputCore::GetNextEvent();
@@ -177,9 +175,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             else
                 button.NotSelect();
         }
-
-
-        // TODO : продумать, чтобы те, что уходят далеко, не существовали 
 
         for (auto& [id, cell] : structure.GetAll())
         {
