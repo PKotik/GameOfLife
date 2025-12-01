@@ -16,6 +16,7 @@ namespace Constants
 	const Color ButtonDefSelectColor(240, 240, 240);
 	const Color ButtonClearColor(187, 218, 219);
 	const Color ButtonSelectClearColor(240, 240, 240);
+	const Color Black(1, 1, 1);
 
 	const Outline CellOutline(0.001, OutlineCellColor);
 	const Outline FieldOutline(0.00225, OutlineFieldColor);
@@ -27,6 +28,7 @@ namespace Constants
 	const float lenYCell = 0.020;
 	const float lenXField = 0.0225;
 	const float lenYField = 0.0225;
+	const float Pixel = 0.005;
 	const float Step = 0.025;
 	const int NeedForBirth = 3;
 	const int GoodForLife1 = 2;

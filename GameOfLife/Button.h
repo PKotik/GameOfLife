@@ -29,6 +29,16 @@ private:
 		return false;
 	}
 
+	bool CanPressNowGhostly() const
+	{
+		auto now = std::chrono::steady_clock::now();
+		if (now - _lastPressTime >= _timeout)
+		{
+			return true;
+		}
+		return false;
+	}
+
 public:
 	Button(const std::string code, Coordinate coor, Color color, Color selectColor,
 					std::function<void()> func,
@@ -46,6 +56,12 @@ public:
 
 	bool State() const { return _state; }
 	bool Selected() const { return _selected; }
+
+	std::string GetCode() { return _code; }
+	void SetCode(std::string code) 
+	{ 
+		if (CanPressNowGhostly()) _code = code; 
+	}
 
 	void Select()
 	{

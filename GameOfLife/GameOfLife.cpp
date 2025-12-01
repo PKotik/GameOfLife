@@ -63,16 +63,19 @@ static void GenerateRandomPairs()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
+
+
+    std::string PauseStopCode = "pause";
     
-    Button StartStopButton("Button_Start_Stop", Coordinate(-0.98, -0.98, 0.15, 0.055), Constants::ButtonDefColor,
+    Button StartStopButton(PauseStopCode, Coordinate(-0.98, -0.98, 0.15, 0.055), Constants::ButtonDefColor,
         Constants::ButtonDefSelectColor, Start, Stop);
-    Button SpeedUpButton("Button_Speed_Up", Coordinate(-0.98, -0.915, 0.07, 0.04), Constants::ButtonDefColor,
+    Button SpeedUpButton("speed_up", Coordinate(-0.98, -0.915, 0.07, 0.04), Constants::ButtonDefColor,
         Constants::ButtonDefSelectColor, SpeedUp, Constants::SpeedTimeOut);
-    Button SpeedDownButton("Button_Speed_Down", Coordinate(-0.90, -0.915, 0.07, 0.04), Constants::ButtonDefColor,
+    Button SpeedDownButton("speed_down", Coordinate(-0.90, -0.915, 0.07, 0.04), Constants::ButtonDefColor,
         Constants::ButtonDefSelectColor, SpeedDown, Constants::SpeedTimeOut);
-    Button RandomButton("Button_Random", Coordinate(-0.98, -0.82, 0.15, 0.055), Constants::ButtonDefColor,
+    Button RandomButton("random", Coordinate(-0.98, -0.82, 0.15, 0.055), Constants::ButtonDefColor,
         Constants::ButtonDefSelectColor, GenerateRandomPairs, Constants::RandomTimeOut);
-    Button ClearButton("Button_Clear", Coordinate(0.83, -0.98, 0.15, 0.055), Constants::ButtonClearColor,
+    Button ClearButton("clear", Coordinate(0.83, -0.98, 0.15, 0.055), Constants::ButtonClearColor,
         Constants::ButtonSelectClearColor, ClearAll, Constants::DefaultTimeOut);
 
     std::list<Button> Buttons;
@@ -82,6 +85,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     Buttons.push_back(SpeedDownButton);
     Buttons.push_back(RandomButton);
     Buttons.push_back(ClearButton);
+
+    auto symbols = SystemData::Symbols();
 
     InputCore::Start();
 
@@ -106,6 +111,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             case InputKey::Space:
             {
                 GameInfo::ReversePause();
+                if (PauseStopCode == "pause") PauseStopCode = "play";
+                else if (PauseStopCode == "play") PauseStopCode = "pause";
                 break;
             }
             case InputKey::MouseLeft:
@@ -116,6 +123,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 {
                     if (coor == button.coor())
                     {
+                        if (button.GetCode() == "pause") PauseStopCode = "play";
+                        if (button.GetCode() == "play") PauseStopCode = "pause";
                         button.Do();
                         buttonClick = true;
                         break;
@@ -217,7 +226,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         structure.UpdateMap();
 
         for (auto& button : Buttons)
+        {
+            if (button.GetCode() == "pause" || button.GetCode() == "play") button.SetCode(PauseStopCode);
             GraphicCore::Draw(button);
+            for (auto& symbol : symbols[button.GetCode()])
+                GraphicCore::Draw(symbol);
+        }
+            
+
 
         GraphicCore::RefreshFrame();
     }

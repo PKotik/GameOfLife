@@ -4,6 +4,7 @@
 #include "Visual.h"
 #include <queue>
 #include <memory>
+#include <vector>
 
 bool GraphicCore::WindowIsAlive()
 {
